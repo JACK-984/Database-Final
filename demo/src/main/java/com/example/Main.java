@@ -21,9 +21,7 @@ public class Main {
       System.out.println("5. Exit");
       System.out.print("Enter your choice: ");
 
-      int choice = scanner.nextInt();
-      scanner.nextLine(); // Consume newline
-
+      int choice = getValidIntInput(scanner);
       switch (choice) {
         case 1:
           managePatients(scanner);
@@ -46,10 +44,18 @@ public class Main {
     }
   }
 
+  private static int getValidIntInput(Scanner scanner) {
+    while (!scanner.hasNextInt()) {
+      System.out.println("Invalid input. Please enter a number.");
+      scanner.next(); // Consume invalid input
+    }
+    return scanner.nextInt();
+  }
+
   private static void generateBill(Scanner scanner) {
     System.out.println("\nBill Generation");
     System.out.print("Enter appointment ID: ");
-    int appointmentId = scanner.nextInt();
+    int appointmentId = getValidIntInput(scanner);
     System.out.print("Enter total amount: ");
     double totalAmount = scanner.nextDouble();
 
@@ -72,7 +78,7 @@ public class Main {
   private static void checkDoctorAvailability(Scanner scanner) {
     System.out.println("\nDoctor Availability");
     System.out.print("Enter doctor ID: ");
-    int doctorId = scanner.nextInt();
+    int doctorId = getValidIntInput(scanner);
     scanner.nextLine(); // Consume newline
     System.out.print("Enter date (YYYY-MM-DD): ");
     String dateStr = scanner.nextLine();
@@ -110,13 +116,12 @@ public class Main {
       System.out.println("3. Delete Patient");
       System.out.println("4. View Patient");
       System.out.println("5. List All Patients");
-      System.out.println("6. View Patients with Overdue Bills (Past 30 days)"); // New option
-      System.out.println("7. View Frequent Patients"); // New option
+      System.out.println("6. View Patients with Overdue Bills (Past 30 days)");
+      System.out.println("7. View Frequent Patients");
       System.out.println("8. Back to Main Menu");
       System.out.print("Enter your choice: ");
 
-      int choice = scanner.nextInt();
-      scanner.nextLine(); // Consume newline
+      int choice = getValidIntInput(scanner);
 
       switch (choice) {
         case 1:
@@ -151,12 +156,12 @@ public class Main {
   private static void viewPatientsWithOverdueBills() {
     System.out.println("\nPatients with Overdue Bills (30+ days)");
     try {
-      List<String> unpaidBills = Patient.getUnpaidBills(); // Expecting a list of strings
+      List<String> unpaidBills = Patient.getUnpaidBills();
       if (unpaidBills.isEmpty()) {
         System.out.println("No patients found with overdue bills.");
       } else {
         for (String bill : unpaidBills) {
-          System.out.println("\n" + bill); // Print each bill detail
+          System.out.println("\n" + bill);
         }
       }
     } catch (SQLException e) {
@@ -193,12 +198,11 @@ public class Main {
       System.out.println("6. View Doctor's Appointments");
       System.out.println("7. Check Doctor's Availability");
       System.out.println("8. View Doctor's Revenue");
-      System.out.println("9. View Popular Specialties"); // New option
-      System.out.println("10. Back to Main Menu"); // Moved down
+      System.out.println("9. View Popular Specialties");
+      System.out.println("10. Back to Main Menu");
       System.out.print("Enter your choice: ");
 
-      int choice = scanner.nextInt();
-      scanner.nextLine(); // Consume newline
+      int choice = getValidIntInput(scanner);
 
       switch (choice) {
         case 1:
@@ -226,7 +230,7 @@ public class Main {
           listRevenueDoctor(scanner);
           break;
         case 9:
-          viewPopularSpecialties(); // New case
+          viewPopularSpecialties();
           break;
         case 10:
           return;
@@ -257,13 +261,13 @@ public class Main {
   private static void listRevenueDoctor(Scanner scanner) {
     System.out.println("\nView Doctor's Revenue");
     System.out.print("Enter doctor ID: ");
-    int doctorId = scanner.nextInt();
+    int doctorId = getValidIntInput(scanner);
 
     System.out.print("Enter month (1-12): ");
-    int month = scanner.nextInt();
+    int month = getValidIntInput(scanner);
 
     System.out.print("Enter year: ");
-    int year = scanner.nextInt();
+    int year = getValidIntInput(scanner);
     scanner.nextLine(); // Consume newline
 
     try {
@@ -291,7 +295,7 @@ public class Main {
   private static void viewDoctorAppointments(Scanner scanner) {
     System.out.println("\nView Doctor's Appointments");
     System.out.print("Enter doctor ID: ");
-    int doctorId = scanner.nextInt();
+    int doctorId = getValidIntInput(scanner);
     scanner.nextLine(); // Consume newline
     System.out.print("Enter date (YYYY-MM-DD): ");
     String dateStr = scanner.nextLine();
@@ -332,8 +336,7 @@ public class Main {
       System.out.println("6. Back to Main Menu");
       System.out.print("Enter your choice: ");
 
-      int choice = scanner.nextInt();
-      scanner.nextLine(); // Consume newline
+      int choice = getValidIntInput(scanner);
 
       switch (choice) {
         case 1:
@@ -365,7 +368,7 @@ public class Main {
     System.out.print("Enter patient name: ");
     String name = scanner.nextLine();
     System.out.print("Enter patient age: ");
-    int age = scanner.nextInt();
+    int age = getValidIntInput(scanner);
     scanner.nextLine(); // Consume newline
     System.out.print("Enter patient gender (Male/Female/Other): ");
     String gender = scanner.nextLine();
@@ -397,7 +400,7 @@ public class Main {
   private static void updatePatient(Scanner scanner) {
     System.out.println("\nUpdate Patient");
     System.out.print("Enter patient ID: ");
-    int patientId = scanner.nextInt();
+    int patientId = getValidIntInput(scanner);
     scanner.nextLine(); // Consume newline
 
     try {
@@ -412,7 +415,7 @@ public class Main {
       if (!name.isEmpty()) patient.setName(name);
 
       System.out.print("Enter new age (enter 0 to keep current): ");
-      int age = scanner.nextInt();
+      int age = getValidIntInput(scanner);
       scanner.nextLine(); // Consume newline
       if (age != 0) patient.setAge(age);
 
@@ -446,7 +449,7 @@ public class Main {
   private static void deletePatient(Scanner scanner) {
     System.out.println("\nDelete Patient");
     System.out.print("Enter patient ID: ");
-    int patientId = scanner.nextInt();
+    int patientId = getValidIntInput(scanner);
     scanner.nextLine(); // Consume newline
 
     try {
@@ -466,7 +469,7 @@ public class Main {
   private static void viewPatient(Scanner scanner) {
     System.out.println("\nView Patient");
     System.out.print("Enter patient ID: ");
-    int patientId = scanner.nextInt();
+    int patientId = getValidIntInput(scanner);
     scanner.nextLine(); // Consume newline
 
     try {
@@ -502,7 +505,7 @@ public class Main {
     System.out.print("Enter doctor specialty: ");
     String specialty = scanner.nextLine();
     System.out.print("Enter years of experience: ");
-    int yearsOfExperience = scanner.nextInt();
+    int yearsOfExperience = getValidIntInput(scanner);
     scanner.nextLine(); // Consume newline
     System.out.print("Enter contact information: ");
     String contactInformation = scanner.nextLine();
@@ -526,7 +529,7 @@ public class Main {
   private static void updateDoctor(Scanner scanner) {
     System.out.println("\nUpdate Doctor");
     System.out.print("Enter doctor ID: ");
-    int doctorId = scanner.nextInt();
+    int doctorId = getValidIntInput(scanner);
     scanner.nextLine(); // Consume newline
 
     try {
@@ -547,7 +550,7 @@ public class Main {
       System.out.print(
         "Enter new years of experience (enter 0 to keep current): "
       );
-      int yearsOfExperience = scanner.nextInt();
+      int yearsOfExperience = getValidIntInput(scanner);
       scanner.nextLine(); // Consume newline
       if (yearsOfExperience != 0) doctor.setYearsOfExperience(
         yearsOfExperience
@@ -571,7 +574,7 @@ public class Main {
   private static void deleteDoctor(Scanner scanner) {
     System.out.println("\nDelete Doctor");
     System.out.print("Enter doctor ID: ");
-    int doctorId = scanner.nextInt();
+    int doctorId = getValidIntInput(scanner);
     scanner.nextLine(); // Consume newline
 
     try {
@@ -591,7 +594,7 @@ public class Main {
   private static void viewDoctor(Scanner scanner) {
     System.out.println("\nView Doctor");
     System.out.print("Enter doctor ID: ");
-    int doctorId = scanner.nextInt();
+    int doctorId = getValidIntInput(scanner);
     scanner.nextLine(); // Consume newline
 
     try {
@@ -623,9 +626,9 @@ public class Main {
   private static void scheduleAppointment(Scanner scanner) {
     System.out.println("\nSchedule Appointment");
     System.out.print("Enter patient ID: ");
-    int patientId = scanner.nextInt();
+    int patientId = getValidIntInput(scanner);
     System.out.print("Enter doctor ID: ");
-    int doctorId = scanner.nextInt();
+    int doctorId = getValidIntInput(scanner);
     scanner.nextLine(); // Consume newline
     System.out.print("Enter appointment date (YYYY-MM-DD): ");
     String dateStr = scanner.nextLine();
@@ -653,7 +656,7 @@ public class Main {
   private static void updateAppointment(Scanner scanner) {
     System.out.println("\nUpdate Appointment");
     System.out.print("Enter appointment ID: ");
-    int appointmentId = scanner.nextInt();
+    int appointmentId = getValidIntInput(scanner);
     scanner.nextLine(); // Consume newline
 
     try {
@@ -709,7 +712,7 @@ public class Main {
   private static void cancelAppointment(Scanner scanner) {
     System.out.println("\nCancel Appointment");
     System.out.print("Enter appointment ID: ");
-    int appointmentId = scanner.nextInt();
+    int appointmentId = getValidIntInput(scanner);
     scanner.nextLine(); // Consume newline
 
     try {
@@ -730,7 +733,7 @@ public class Main {
   private static void viewAppointment(Scanner scanner) {
     System.out.println("\nView Appointment");
     System.out.print("Enter appointment ID: ");
-    int appointmentId = scanner.nextInt();
+    int appointmentId = getValidIntInput(scanner);
     scanner.nextLine(); // Consume newline
 
     try {
