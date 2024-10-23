@@ -365,17 +365,26 @@ public class Main {
   // Patient management methods
   private static void addPatient(Scanner scanner) {
     System.out.println("\nAdd Patient");
+
+    // Clear any lingering newline character
+    scanner.nextLine();
+
     System.out.print("Enter patient name: ");
     String name = scanner.nextLine();
+
     System.out.print("Enter patient age: ");
     int age = getValidIntInput(scanner);
-    scanner.nextLine(); // Consume newline
+    scanner.nextLine(); // Consume newline after numeric input
+
     System.out.print("Enter patient gender (Male/Female/Other): ");
     String gender = scanner.nextLine();
+
     System.out.print("Enter patient address: ");
     String address = scanner.nextLine();
+
     System.out.print("Enter patient contact number: ");
     String contactNumber = scanner.nextLine();
+
     System.out.print("Enter patient medical history: ");
     String medicalHistory = scanner.nextLine();
 
@@ -387,6 +396,7 @@ public class Main {
       contactNumber,
       medicalHistory
     );
+
     try {
       patient.save();
       System.out.println(
@@ -500,13 +510,20 @@ public class Main {
   // Doctor management methods
   private static void addDoctor(Scanner scanner) {
     System.out.println("\nAdd Doctor");
+
+    // Clear any lingering newline character
+    scanner.nextLine();
+
     System.out.print("Enter doctor name: ");
     String name = scanner.nextLine();
+
     System.out.print("Enter doctor specialty: ");
     String specialty = scanner.nextLine();
+
     System.out.print("Enter years of experience: ");
     int yearsOfExperience = getValidIntInput(scanner);
-    scanner.nextLine(); // Consume newline
+    scanner.nextLine(); // Consume newline after numeric input
+
     System.out.print("Enter contact information: ");
     String contactInformation = scanner.nextLine();
 
@@ -516,6 +533,7 @@ public class Main {
       yearsOfExperience,
       contactInformation
     );
+
     try {
       doctor.save();
       System.out.println(
