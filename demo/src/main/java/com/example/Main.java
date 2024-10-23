@@ -369,24 +369,74 @@ public class Main {
     // Clear any lingering newline character
     scanner.nextLine();
 
-    System.out.print("Enter patient name: ");
-    String name = scanner.nextLine();
+    // Get and validate name
+    String name;
+    do {
+      System.out.print("Enter patient name: ");
+      name = scanner.nextLine().trim();
+      if (name.isEmpty()) {
+        System.out.println("Error: Name cannot be empty.");
+      }
+    } while (name.isEmpty());
 
-    System.out.print("Enter patient age: ");
-    int age = getValidIntInput(scanner);
+    // Get and validate age
+    int age;
+    do {
+      System.out.print("Enter patient age: ");
+      age = getValidIntInput(scanner);
+      if (age <= 0 || age > 150) {
+        System.out.println(
+          "Error: Please enter a valid age between 1 and 150."
+        );
+      }
+    } while (age <= 0 || age > 150);
     scanner.nextLine(); // Consume newline after numeric input
 
-    System.out.print("Enter patient gender (Male/Female/Other): ");
-    String gender = scanner.nextLine();
+    // Get and validate gender
+    String gender;
+    do {
+      System.out.print("Enter patient gender (Male/Female/Other): ");
+      gender = scanner.nextLine().trim();
+      if (gender.isEmpty()) {
+        System.out.println("Error: Gender cannot be empty.");
+      } else if (!isValidGender(gender)) {
+        System.out.println("Error: Please enter Male, Female, or Other.");
+      }
+    } while (gender.isEmpty() || !isValidGender(gender));
 
-    System.out.print("Enter patient address: ");
-    String address = scanner.nextLine();
+    // Get and validate address
+    String address;
+    do {
+      System.out.print("Enter patient address: ");
+      address = scanner.nextLine().trim();
+      if (address.isEmpty()) {
+        System.out.println("Error: Address cannot be empty.");
+      }
+    } while (address.isEmpty());
 
-    System.out.print("Enter patient contact number: ");
-    String contactNumber = scanner.nextLine();
+    // Get and validate contact number
+    String contactNumber;
+    do {
+      System.out.print("Enter patient contact number: ");
+      contactNumber = scanner.nextLine().trim();
+      if (contactNumber.isEmpty()) {
+        System.out.println("Error: Contact number cannot be empty.");
+      } else if (!isValidContactNumber(contactNumber)) {
+        System.out.println("Error: Please enter a valid contact number.");
+      }
+    } while (contactNumber.isEmpty() || !isValidContactNumber(contactNumber));
 
-    System.out.print("Enter patient medical history: ");
-    String medicalHistory = scanner.nextLine();
+    // Get and validate medical history
+    String medicalHistory;
+    do {
+      System.out.print("Enter patient medical history: ");
+      medicalHistory = scanner.nextLine().trim();
+      if (medicalHistory.isEmpty()) {
+        System.out.println(
+          "Error: Medical history cannot be empty. If none, enter 'None'."
+        );
+      }
+    } while (medicalHistory.isEmpty());
 
     Patient patient = new Patient(
       name,
@@ -405,6 +455,30 @@ public class Main {
     } catch (SQLException e) {
       System.out.println("Error adding patient: " + e.getMessage());
     }
+  }
+
+  // Helper method for gender validation
+  private static boolean isValidGender(String gender) {
+    String normalizedGender = gender.toLowerCase();
+    return (
+      normalizedGender.equals("male") ||
+      normalizedGender.equals("female") ||
+      normalizedGender.equals("other")
+    );
+  }
+
+  // Helper method for contact number validation
+  private static boolean isValidContactNumber(String contactNumber) {
+    // Remove any spaces or special characters
+    String cleanNumber = contactNumber.replaceAll("[\\s-()]", "");
+
+    // Check if the number contains only digits and has an appropriate length
+    // Modify the length check based on your country's phone number format
+    return (
+      cleanNumber.matches("\\d+") &&
+      cleanNumber.length() >= 10 &&
+      cleanNumber.length() <= 15
+    );
   }
 
   private static void updatePatient(Scanner scanner) {
@@ -514,18 +588,52 @@ public class Main {
     // Clear any lingering newline character
     scanner.nextLine();
 
-    System.out.print("Enter doctor name: ");
-    String name = scanner.nextLine();
+    // Get and validate name
+    String name;
+    do {
+      System.out.print("Enter doctor name: ");
+      name = scanner.nextLine().trim();
+      if (name.isEmpty()) {
+        System.out.println("Error: Name cannot be empty.");
+      }
+    } while (name.isEmpty());
 
-    System.out.print("Enter doctor specialty: ");
-    String specialty = scanner.nextLine();
+    // Get and validate specialty
+    String specialty;
+    do {
+      System.out.print("Enter doctor specialty: ");
+      specialty = scanner.nextLine().trim();
+      if (specialty.isEmpty()) {
+        System.out.println("Error: Specialty cannot be empty.");
+      }
+    } while (specialty.isEmpty());
 
-    System.out.print("Enter years of experience: ");
-    int yearsOfExperience = getValidIntInput(scanner);
+    // Get and validate years of experience
+    int yearsOfExperience;
+    do {
+      System.out.print("Enter years of experience: ");
+      yearsOfExperience = getValidIntInput(scanner);
+      if (yearsOfExperience < 0 || yearsOfExperience > 60) {
+        System.out.println(
+          "Error: Please enter a valid number of years between 0 and 60."
+        );
+      }
+    } while (yearsOfExperience < 0 || yearsOfExperience > 60);
     scanner.nextLine(); // Consume newline after numeric input
 
-    System.out.print("Enter contact information: ");
-    String contactInformation = scanner.nextLine();
+    // Get and validate contact information
+    String contactInformation;
+    do {
+      System.out.print("Enter contact information: ");
+      contactInformation = scanner.nextLine().trim();
+      if (contactInformation.isEmpty()) {
+        System.out.println("Error: Contact information cannot be empty.");
+      } else if (!isValidContactNumber(contactInformation)) {
+        System.out.println("Error: Please enter a valid contact number.");
+      }
+    } while (
+      contactInformation.isEmpty() || !isValidContactNumber(contactInformation)
+    );
 
     Doctor doctor = new Doctor(
       name,
@@ -643,31 +751,77 @@ public class Main {
   // Appointment management methods
   private static void scheduleAppointment(Scanner scanner) {
     System.out.println("\nSchedule Appointment");
+
+    // Clear any lingering newline character
+    scanner.nextLine();
+
     System.out.print("Enter patient ID: ");
     int patientId = getValidIntInput(scanner);
+
     System.out.print("Enter doctor ID: ");
     int doctorId = getValidIntInput(scanner);
     scanner.nextLine(); // Consume newline
+
     System.out.print("Enter appointment date (YYYY-MM-DD): ");
     String dateStr = scanner.nextLine();
+
     System.out.print("Enter appointment time (HH:MM): ");
     String timeStr = scanner.nextLine();
 
-    Appointment appointment = new Appointment(
-      patientId,
-      doctorId,
-      Date.valueOf(dateStr),
-      Time.valueOf(timeStr + ":00"),
-      "Scheduled"
-    );
+    // Convert strings to Date and Time objects
+    Date appointmentDate = Date.valueOf(dateStr);
+    Time appointmentTime = Time.valueOf(timeStr + ":00");
+
     try {
-      appointment.save();
-      System.out.println(
-        "Appointment scheduled successfully with ID: " +
-        appointment.getAppointmentId()
-      );
+      // Check for existing appointments for the doctor at the same time
+      if (isDoctorAvailable(doctorId, appointmentDate, appointmentTime)) {
+        Appointment appointment = new Appointment(
+          patientId,
+          doctorId,
+          appointmentDate,
+          appointmentTime,
+          "Scheduled"
+        );
+
+        appointment.save();
+        System.out.println(
+          "Appointment scheduled successfully with ID: " +
+          appointment.getAppointmentId()
+        );
+      } else {
+        System.out.println(
+          "Error: Doctor already has an appointment at this time."
+        );
+      }
     } catch (SQLException e) {
       System.out.println("Error scheduling appointment: " + e.getMessage());
+    }
+  }
+
+  // Helper method to check doctor availability
+  private static boolean isDoctorAvailable(int doctorId, Date date, Time time)
+    throws SQLException {
+    String query =
+      """
+        SELECT COUNT(*) 
+        FROM Appointments 
+        WHERE DoctorID = ? 
+        AND Date = ? 
+        AND Time = ? 
+        AND Status != 'Cancelled'
+    """;
+
+    try (
+      Connection conn = DBConnection.getConnection();
+      PreparedStatement stmt = conn.prepareStatement(query)
+    ) {
+      stmt.setInt(1, doctorId);
+      stmt.setDate(2, date);
+      stmt.setTime(3, time);
+
+      ResultSet rs = stmt.executeQuery();
+      rs.next();
+      return rs.getInt(1) == 0;
     }
   }
 
